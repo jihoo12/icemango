@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import ThermalShader from "../components/ThermalShader.astro";
 
 const stages = [
   { id: "01", temp: "-24°C", word: "FROZEN", sub: "Everything begins rigid." },
@@ -23,6 +24,7 @@ const stages = [
 </head>
 
 <body>
+  <ThermalShader />
   <div class="grain" aria-hidden="true"></div>
   <div class="pointer" aria-hidden="true"></div>
 
@@ -141,7 +143,7 @@ const stages = [
       <div class="collision-sticky">
         <div class="collision-meta">
           <span>[ PHASE 02 ]</span>
-          <span>UNSTABLE</span>
+          <span>WEBGL BREACH DETECTED</span>
         </div>
 
         <div class="collision-ice" aria-hidden="true">
@@ -156,9 +158,14 @@ const stages = [
           <span>+</span>
         </div>
 
+        <div class="webgl-breach">
+          <span>NO</span>
+          <strong>THREE.JS</strong>
+        </div>
+
         <p class="collision-caption">
-          TWO TEMPERATURES.<br />
-          ONE VIEWPORT.
+          CSS HAS LOST CONTROL.<br />
+          SOMETHING ELSE IS RENDERING.
         </p>
       </div>
     </section>
@@ -292,9 +299,9 @@ const stages = [
 
       <div class="manifesto-small">
         <p>
-          NO THREE.JS.<br />
-          NO CANVAS.<br />
-          NO PARTICLE ENGINE.
+          CSS DID MOST<br />
+          OF THE DAMAGE.<br />
+          WEBGL FINISHED IT.
         </p>
 
         <p>

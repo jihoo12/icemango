@@ -1,0 +1,486 @@
+<div class="thermal-webgl" aria-hidden="true">
+  <canvas id="thermal-canvas"></canvas>
+</div>
+
+<script>
+  import * as THREE from "three";
+
+  const canvas = document.querySelector<HTMLCanvasElement>("#thermal-canvas");
+  const collision = document.querySelector<HTMLElement>(".collision");
+  const explosion = document.querySelector<HTMLElement>(".explosion");
+
+  if (canvas && collision && explosion) {
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: false,
+      powerPreference: "high-performance",
+    });
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.Camera();
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+
+    const uniforms = {
+      uTime: { value: 0 },
+      uProgress: { value: 0 },
+      uBurst: { value: 0 },
+      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+      uResolution: {
+        value: new THREE.Vector2(
+          window.innerWidth * renderer.getPixelRatio(),
+          window.innerHeight * renderer.getPixelRatio(),
+        ),
+      },
+    };
+
+    const material = new THREE.ShaderMaterial({
+      transparent: true,
+
+      vertexShader: `
+        varying vec2 vUv;
+
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 1.0);
+        }
+      `,
+
+      fragmentShader: `
+        precision highp float;
+
+        varying vec2 vUv;
+
+        uniform float uTime;
+        uniform float uProgress;
+        uniform float uBurst;
+        uniform vec2 uMouse;
+        uniform vec2 uResolution;
+
+        #define PI 3.14159265359
+
+        float hash(vec2 p) {
+          p = fract(p * vec2(123.34, 456.21));
+          p += dot(p, p + 45.32);
+          return fract(p.x * p.y);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+
+          f = f * f * (3.0 - 2.0 * f);
+
+          float a = hash(i);
+          float b = hash(i + vec2(1.0, 0.0));
+          float c = hash(i + vec2(0.0, 1.0));
+          float d = hash(i + vec2(1.0, 1.0));
+
+          return mix(
+            mix(a, b, f.x),
+            mix(c, d, f.x),
+            f.y
+          );
+        }
+
+        float fbm(vec2 p) {
+          float value = 0.0;
+          float amplitude = 0.5;
+
+          for (int i = 0; i < 5; i++) {
+            value += noise(p) * amplitude;
+            p *= 2.03;
+            amplitude *= 0.5;
+          }
+
+          return value;
+        }
+
+        vec3 iceColor(float n) {
+          vec3 deep = vec3(0.05, 0.52, 0.82);
+          vec3 pale = vec3(0.70, 0.95, 1.00);
+
+          return mix(deep, pale, n);
+        }
+
+        vec3 mangoColor(float n) {
+          vec3 orange = vec3(1.00, 0.36, 0.04);
+          vec3 yellow = vec3(1.00, 0.84, 0.08);
+
+          return mix(orange, yellow, n);
+        }
+
+        void main() {
+          vec2 uv = vUv;
+
+          vec2 aspect = vec2(
+            uResolution.x / uResolution.y,
+            1.0
+          );
+
+          vec2 p = (uv - 0.5) * aspect;
+
+          vec2 mouse = (uMouse - 0.5) * aspect;
+
+          float t = uTime * 0.18;
+
+          /*
+           * Liquid field
+           */
+
+          float fieldA = fbm(
+            p * 3.2 +
+            vec2(t, -t * 0.7)
+          );
+
+          float fieldB = fbm(
+            p * 5.5 -
+            vec2(t * 0.4, t)
+          );
+
+          float field =
+            fieldA * 0.65 +
+            fieldB * 0.35;
+
+          /*
+           * Mouse disturbance
+           */
+
+          float mouseDistance = length(p - mouse);
+
+          float mouseWave =
+            sin(mouseDistance * 35.0 - uTime * 5.0)
+            * exp(-mouseDistance * 6.0);
+
+          field += mouseWave * 0.08;
+
+          /*
+           * Collision boundary
+           */
+
+          float wave =
+            sin(
+              uv.y * 13.0 +
+              field * 8.0 +
+              uTime * 0.7
+            ) * 0.035;
+
+          float boundary =
+            0.5 +
+            wave +
+            (field - 0.5) * 0.14;
+
+          float softness =
+            0.01 +
+            uProgress * 0.08;
+
+          float mixField =
+            smoothstep(
+              boundary - softness,
+              boundary + softness,
+              uv.x
+            );
+
+          /*
+           * Color
+           */
+
+          vec3 ice =
+            iceColor(fieldA);
+
+          vec3 mango =
+            mangoColor(fieldB);
+
+          vec3 color =
+            mix(ice, mango, mixField);
+
+          /*
+           * Hot collision core
+           */
+
+          float center =
+            1.0 -
+            smoothstep(
+              0.0,
+              0.22 + uProgress * 0.18,
+              abs(uv.x - boundary)
+            );
+
+          vec3 heat =
+            vec3(1.0, 0.12, 0.02);
+
+          color =
+            mix(
+              color,
+              heat,
+              center * uProgress * 0.75
+            );
+
+          /*
+           * Explosion shockwave
+           */
+
+          vec2 centerPoint =
+            (uv - 0.5) * aspect;
+
+          float dist =
+            length(centerPoint);
+
+          float shockPosition =
+            uBurst * 1.25;
+
+          float shock =
+            1.0 -
+            smoothstep(
+              0.015,
+              0.07,
+              abs(dist - shockPosition)
+            );
+
+          shock *=
+            smoothstep(0.0, 0.08, uBurst);
+
+          color +=
+            vec3(1.0, 0.65, 0.12)
+            * shock
+            * 1.8;
+
+          /*
+           * Radial distortion
+           */
+
+          float angle =
+            atan(centerPoint.y, centerPoint.x);
+
+          float rays =
+            sin(angle * 18.0 + uTime * 2.0)
+            * 0.5 + 0.5;
+
+          float flash =
+            exp(-dist * 7.0)
+            * uBurst;
+
+          color +=
+            vec3(1.0, 0.25, 0.03)
+            * flash
+            * (0.7 + rays * 0.7);
+
+          /*
+           * Film / digital grain
+           */
+
+          float grain =
+            hash(
+              gl_FragCoord.xy +
+              fract(uTime) * 100.0
+            );
+
+          color +=
+            (grain - 0.5) * 0.035;
+
+          /*
+           * Canvas fades in only
+           * during collision.
+           */
+
+          float alpha =
+            smoothstep(
+              0.05,
+              0.3,
+              uProgress
+            );
+
+          alpha *= 0.92;
+
+          gl_FragColor =
+            vec4(color, alpha);
+        }
+      `,
+      uniforms,
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let targetMouseX = 0.5;
+    let targetMouseY = 0.5;
+
+    let currentMouseX = 0.5;
+    let currentMouseY = 0.5;
+
+    let targetProgress = 0;
+    let currentProgress = 0;
+
+    let targetBurst = 0;
+    let currentBurst = 0;
+
+    let running = true;
+
+    const pointerMove = (event: PointerEvent) => {
+      targetMouseX = event.clientX / window.innerWidth;
+      targetMouseY = 1.0 - event.clientY / window.innerHeight;
+    };
+
+    window.addEventListener(
+      "pointermove",
+      pointerMove,
+      { passive: true },
+    );
+
+    const clamp = (
+      value: number,
+      min = 0,
+      max = 1,
+    ) => Math.min(max, Math.max(min, value));
+
+    function updateScroll() {
+    const collisionRect =
+        collision.getBoundingClientRect();
+
+    const collisionDistance =
+        collision.offsetHeight -
+        window.innerHeight;
+
+    targetProgress = clamp(
+        -collisionRect.top /
+        Math.max(collisionDistance, 1),
+    );
+
+    const explosionRect =
+        explosion.getBoundingClientRect();
+
+    const explosionProgress =
+        clamp(
+        1 -
+        Math.abs(
+            explosionRect.top /
+            window.innerHeight
+        ),
+        );
+
+    targetBurst =
+        Math.pow(explosionProgress, 2);
+
+    const webglLayer =
+        canvas.parentElement as HTMLElement;
+
+    const collisionVisibility =
+        Math.sin(targetProgress * Math.PI);
+
+    webglLayer.style.opacity =
+        String(Math.max(
+        explosionProgress * 0.9,
+        collisionVisibility,
+        ));
+    }
+
+    window.addEventListener(
+      "scroll",
+      updateScroll,
+      { passive: true },
+    );
+
+    updateScroll();
+
+    const clock = new THREE.Clock();
+
+    function render() {
+      if (!running) return;
+
+      const time = clock.getElapsedTime();
+
+      currentMouseX +=
+        (targetMouseX - currentMouseX) * 0.06;
+
+      currentMouseY +=
+        (targetMouseY - currentMouseY) * 0.06;
+
+      currentProgress +=
+        (targetProgress - currentProgress) * 0.06;
+
+      currentBurst +=
+        (targetBurst - currentBurst) * 0.08;
+
+      uniforms.uTime.value = time;
+
+      uniforms.uMouse.value.set(
+        currentMouseX,
+        currentMouseY,
+      );
+
+      uniforms.uProgress.value =
+        currentProgress;
+
+      uniforms.uBurst.value =
+        currentBurst;
+
+      /*
+       * We don't need to hammer the GPU
+       * while the effect is invisible.
+       */
+
+      const collisionVisible =
+        targetProgress > 0.01 &&
+        targetProgress < 0.999;
+
+      const explosionRect =
+        explosion.getBoundingClientRect();
+
+      const explosionVisible =
+        explosionRect.bottom > 0 &&
+        explosionRect.top < window.innerHeight;
+
+      if (
+        collisionVisible ||
+        explosionVisible ||
+        currentProgress > 0.02
+      ) {
+        renderer.render(scene, camera);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    function resize() {
+      const pixelRatio =
+        Math.min(window.devicePixelRatio, 1.5);
+
+      renderer.setPixelRatio(pixelRatio);
+
+      renderer.setSize(
+        window.innerWidth,
+        window.innerHeight,
+        false,
+      );
+
+      uniforms.uResolution.value.set(
+        window.innerWidth * pixelRatio,
+        window.innerHeight * pixelRatio,
+      );
+    }
+
+    window.addEventListener("resize", resize);
+
+    /*
+     * Stop animation when tab is hidden.
+     */
+
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        running = !document.hidden;
+
+        if (running) {
+          clock.start();
+          render();
+        }
+      },
+    );
+
+    render();
+  }
+</script>
