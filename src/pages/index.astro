@@ -1,258 +1,362 @@
 ---
 import "../styles/global.css";
 
-const specimens = [
-  {
-    number: "01",
-    tag: "COLOR",
-    title: "OKLCH",
-    copy: "Perceptual color, pushed beyond the comfortable edge.",
-    className: "specimen--color",
-  },
-  {
-    number: "02",
-    tag: "MASK",
-    title: "CUT IT",
-    copy: "Typography becomes shape. Shape becomes interface.",
-    className: "specimen--mask",
-  },
-  {
-    number: "03",
-    tag: "BLEND",
-    title: "MIX",
-    copy: "Layers collide without asking JavaScript for permission.",
-    className: "specimen--blend",
-  },
+const stages = [
+  { id: "01", temp: "-24°C", word: "FROZEN", sub: "Everything begins rigid." },
+  { id: "02", temp: "04°C", word: "MELTING", sub: "Structure starts to surrender." },
+  { id: "03", temp: "37°C", word: "COLLIDE", sub: "Cold meets something impossible." },
+  { id: "04", temp: "72°C", word: "MANGO", sub: "Now we're getting somewhere." },
 ];
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta
+    name="description"
+    content="ICE/MANGO — an experimental CSS-first experience."
+  />
+  <meta name="theme-color" content="#e9f7ff" />
+  <title>ICE / MANGO — MELT THE WEB</title>
+</head>
 
-    <meta
-      name="description"
-      content="A CSS-first experimental landing page built with Astro."
-    />
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="pointer" aria-hidden="true"></div>
 
-    <title>ICE / MANGO — CSS Playground</title>
-  </head>
+  <header class="nav">
+    <a href="#top" class="brand">ICE<span>/</span>MANGO</a>
 
-  <body>
-    <div class="noise" aria-hidden="true"></div>
-    <div class="cursor-glow" aria-hidden="true"></div>
+    <div class="nav-status">
+      <span class="status-dot"></span>
+      <span>THERMAL SYSTEM ONLINE</span>
+    </div>
 
-    <header class="nav">
-      <a class="logo" href="#top" aria-label="Ice Mango home">
-        ICE<span>/</span>MANGO
-      </a>
+    <a href="#melt" class="nav-jump">BEGIN MELT ↓</a>
+  </header>
 
-      <div class="nav__meta">
-        <span>CSS EXPERIMENT</span>
+  <main id="top">
+    <!-- ==================================================
+         00 / FROZEN
+    =================================================== -->
+
+    <section class="ice">
+      <div class="ice-grid" aria-hidden="true"></div>
+
+      <div class="ice-meta">
+        <span>[ PHASE 00 ]</span>
+        <span>STATE: SOLID</span>
+        <span>TEMP: −24°C</span>
+      </div>
+
+      <div class="ice-title">
+        <span class="ice-title-top">ICE</span>
+
+        <div class="ice-cut">
+          <span>ICE</span>
+        </div>
+
+        <span class="ice-title-bottom">ICE</span>
+      </div>
+
+      <div class="ice-bottom">
+        <p>
+          THE WEB<br />
+          BEFORE HEAT.
+        </p>
+
+        <div class="thermometer">
+          <span>−24</span>
+          <div class="thermometer-line">
+            <i></i>
+          </div>
+          <span>72</span>
+        </div>
+
+        <p class="right">
+          SCROLL<br />
+          TO APPLY HEAT ↓
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         01 / MELT
+    =================================================== -->
+
+    <section class="melt" id="melt">
+      <div class="melt-sticky">
+        <div class="melt-counter">
+          <span>[ 01 ]</span>
+          <span>MELTING POINT</span>
+        </div>
+
+        <div class="melt-word" aria-label="Melt">
+          <span>M</span>
+          <span>E</span>
+          <span>L</span>
+          <span>T</span>
+        </div>
+
+        <div class="drips" aria-hidden="true">
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
+
+        <div class="melt-temp">
+          <span>−24°C</span>
+          <strong>→</strong>
+          <span>04°C</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         TRANSITION
+    =================================================== -->
+
+    <section class="transition">
+      <div class="transition-copy">
+        <p>RIGID</p>
+        <p>BECOMES</p>
+        <p class="liquid">LIQUID.</p>
+      </div>
+
+      <aside>
+        CSS DOESN'T NEED TO<br />
+        SIT STILL.
+      </aside>
+    </section>
+
+    <!-- ==================================================
+         02 / COLLISION
+    =================================================== -->
+
+    <section class="collision">
+      <div class="collision-sticky">
+        <div class="collision-meta">
+          <span>[ PHASE 02 ]</span>
+          <span>UNSTABLE</span>
+        </div>
+
+        <div class="collision-ice" aria-hidden="true">
+          <span>ICE</span>
+        </div>
+
+        <div class="collision-mango" aria-hidden="true">
+          <span>MANGO</span>
+        </div>
+
+        <div class="collision-center">
+          <span>+</span>
+        </div>
+
+        <p class="collision-caption">
+          TWO TEMPERATURES.<br />
+          ONE VIEWPORT.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         EXPLOSION
+    =================================================== -->
+
+    <section class="explosion">
+      <div class="explosion-ring ring-1"></div>
+      <div class="explosion-ring ring-2"></div>
+      <div class="explosion-ring ring-3"></div>
+
+      <p class="boom">BOOM</p>
+
+      <div class="explosion-meta">
+        <span>37°C</span>
+        <span>THERMAL COLLISION</span>
+        <span>37°C</span>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         03 / THERMAL INDEX
+    =================================================== -->
+
+    <section class="index">
+      <header class="index-head">
+        <span>[ THERMAL INDEX ]</span>
+
+        <p>
+          FOUR STATES.<br />
+          ZERO FRAMEWORKS*.
+        </p>
+
+        <small>*except Astro being quietly useful</small>
+      </header>
+
+      <div class="index-list">
+        {
+          stages.map((stage) => (
+            <article class="index-row">
+              <span class="index-id">{stage.id}</span>
+              <span class="index-temp">{stage.temp}</span>
+
+              <div class="index-name">
+                <span>{stage.word}</span>
+              </div>
+
+              <p>{stage.sub}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ==================================================
+         04 / HORIZONTAL TYPOGRAPHY
+    =================================================== -->
+
+    <section class="horizontal">
+      <div class="horizontal-sticky">
+        <div class="horizontal-track">
+          <span>COLD</span>
+          <i>→</i>
+          <span>MELT</span>
+          <i>→</i>
+          <span>HOT</span>
+          <i>→</i>
+          <span>MANGO</span>
+        </div>
+
+        <div class="horizontal-bottom">
+          <span>SCROLL = TEMPERATURE</span>
+          <span>ICE/MANGO THERMAL LAB</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         05 / MANGO
+    =================================================== -->
+
+    <section class="mango">
+      <div class="sun sun-a" aria-hidden="true"></div>
+      <div class="sun sun-b" aria-hidden="true"></div>
+
+      <div class="mango-meta">
+        <span>[ FINAL PHASE ]</span>
+        <span>STATE: DELICIOUS</span>
+        <span>TEMP: 72°C</span>
+      </div>
+
+      <div class="mango-title">
+        <span>MAN</span>
+        <span>GO</span>
+      </div>
+
+      <div class="mango-orbit" aria-hidden="true">
+        <div class="mango-fruit">
+          <span>72°</span>
+        </div>
+      </div>
+
+      <div class="mango-foot">
+        <p>
+          WE STARTED<br />
+          WITH ICE.
+        </p>
+
+        <p class="mango-message">
+          SOMEWHERE ALONG THE WAY<br />
+          THE BROWSER CAUGHT FIRE.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         MANIFESTO
+    =================================================== -->
+
+    <section class="manifesto">
+      <span class="manifesto-label">[ CSS MANIFESTO ]</span>
+
+      <div class="manifesto-lines">
+        <p>DON'T DECORATE</p>
+        <p>THE <em>PAGE.</em></p>
+        <p>MAKE THE PAGE</p>
+        <p><strong>THE THING.</strong></p>
+      </div>
+
+      <div class="manifesto-small">
+        <p>
+          NO THREE.JS.<br />
+          NO CANVAS.<br />
+          NO PARTICLE ENGINE.
+        </p>
+
+        <p>
+          JUST TYPE, COLOR, LAYOUT,<br />
+          THE SCROLLBAR AND A<br />
+          SLIGHTLY UNHEALTHY AMOUNT<br />
+          OF CSS.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================================================
+         FINALE
+    =================================================== -->
+
+    <section class="finale">
+      <div class="finale-noise" aria-hidden="true"></div>
+
+      <div class="finale-meta">
+        <span>ICE/MANGO®</span>
+        <span>CSS THERMAL LABORATORY</span>
         <span>2026</span>
       </div>
 
-      <a class="nav__link" href="#experiments">EXPLORE ↓</a>
-    </header>
+      <h1>
+        MELT
+        <span>THE</span>
+        WEB.
+      </h1>
 
-    <main id="top">
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero__eyebrow">
-          <span>NO CANVAS</span>
-          <span>NO WEBGL</span>
-          <span>JUST THE BROWSER</span>
+      <div class="finale-bottom">
+        <a href="#top">FREEZE AGAIN ↑</a>
+
+        <div class="finale-disc">
+          <span>ICE / MANGO / ICE / MANGO /</span>
         </div>
 
-        <h1 class="hero__title" aria-label="Ice Mango">
-          <span class="hero__line hero__line--ice">ICE</span>
-
-          <span class="hero__slash" aria-hidden="true">/</span>
-
-          <span class="hero__line hero__line--mango">MANGO</span>
-        </h1>
-
-        <div class="hero__footer">
-          <p>
-            An experiment in typography,<br />
-            motion and modern CSS.
-          </p>
-
-          <div class="hero__orb" aria-hidden="true"></div>
-
-          <p class="hero__scroll">
-            SCROLL TO<br />
-            BREAK THINGS ↓
-          </p>
-        </div>
-      </section>
-
-      <!-- MARQUEE -->
-      <section class="ticker" aria-label="CSS technologies">
-        <div class="ticker__track">
-          <span>CSS IS A GRAPHICS ENGINE ✦</span>
-          <span>OKLCH ✦</span>
-          <span>CONTAINER QUERIES ✦</span>
-          <span>SCROLL TIMELINES ✦</span>
-          <span>MASKS ✦</span>
-          <span>GRADIENTS ✦</span>
-
-          <span aria-hidden="true">CSS IS A GRAPHICS ENGINE ✦</span>
-          <span aria-hidden="true">OKLCH ✦</span>
-          <span aria-hidden="true">CONTAINER QUERIES ✦</span>
-          <span aria-hidden="true">SCROLL TIMELINES ✦</span>
-          <span aria-hidden="true">MASKS ✦</span>
-          <span aria-hidden="true">GRADIENTS ✦</span>
-        </div>
-      </section>
-
-      <!-- MANIFESTO -->
-      <section class="manifesto">
-        <div class="manifesto__label">
-          <span>[ MANIFESTO ]</span>
-          <span>001—004</span>
-        </div>
-
-        <div class="manifesto__copy">
-          <p class="reveal-text">
-            THE WEB DOESN'T
-          </p>
-
-          <p class="reveal-text reveal-text--indent">
-            NEED ANOTHER
-          </p>
-
-          <p class="reveal-text">
-            <em>SAFE</em> LANDING
-          </p>
-
-          <p class="reveal-text reveal-text--right">
-            PAGE.
-          </p>
-        </div>
-
-        <div class="manifesto__note">
-          <p>
-            Less component library.<br />
-            More browser.
-          </p>
-
-          <p>
-            We let layout stretch, color collide,
-            type escape and CSS do the work.
-          </p>
-        </div>
-      </section>
-
-      <!-- GIANT TYPE -->
-      <section class="type-break" aria-hidden="true">
-        <div class="type-break__sticky">
-          <p>TOO</p>
-          <p>MUCH</p>
-          <p>CSS</p>
-
-          <div class="type-break__disc"></div>
-        </div>
-      </section>
-
-      <!-- EXPERIMENTS -->
-      <section class="experiments" id="experiments">
-        <header class="section-head">
-          <p>[ SELECTED EXPERIMENTS ]</p>
-          <p>
-            THREE WAYS TO<br />
-            ABUSE A STYLESHEET.
-          </p>
-        </header>
-
-        <div class="specimens">
-          {
-            specimens.map((item) => (
-              <article class={`specimen ${item.className}`}>
-                <div class="specimen__meta">
-                  <span>{item.number}</span>
-                  <span>{item.tag}</span>
-                </div>
-
-                <div class="specimen__visual">
-                  <span>{item.title}</span>
-                </div>
-
-                <p class="specimen__copy">{item.copy}</p>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <!-- CSS GRID PLAYGROUND -->
-      <section class="grid-room">
-        <div class="grid-room__background" aria-hidden="true"></div>
-
-        <div class="grid-room__copy">
-          <span>RESPONSIVE</span>
-          <strong>WITHOUT</strong>
-          <span>BEING</span>
-          <strong>BORING.</strong>
-        </div>
-
-        <div class="grid-room__coordinates" aria-hidden="true">
-          <span>37°33′N</span>
-          <span>126°59′E</span>
-        </div>
-      </section>
-
-      <!-- STATEMENT -->
-      <section class="statement">
-        <p class="statement__tiny">A SMALL REMINDER</p>
-
-        <p class="statement__giant">
-          THE
-          <span>MEDIUM</span>
-          IS THE
-          <i>BROWSER.</i>
+        <p>
+          MADE WITH<br />
+          ASTRO + CSS
         </p>
-      </section>
+      </div>
+    </section>
+  </main>
 
-      <!-- FINALE -->
-      <section class="finale">
-        <div class="finale__top">
-          <span>YOU MADE IT.</span>
-          <span>NO GPU WAS HARMED.</span>
-        </div>
+  <script>
+    const root = document.documentElement;
 
-        <h2>
-          MAKE<br />
-          <span>WEIRD</span><br />
-          WEBSITES.
-        </h2>
+    window.addEventListener(
+      "pointermove",
+      (event) => {
+        root.style.setProperty("--mx", `${event.clientX}px`);
+        root.style.setProperty("--my", `${event.clientY}px`);
 
-        <footer class="footer">
-          <a href="#top">BACK TO TOP ↑</a>
+        const x = event.clientX / window.innerWidth - 0.5;
+        const y = event.clientY / window.innerHeight - 0.5;
 
-          <p>
-            BUILT WITH<br />
-            ASTRO + CSS
-          </p>
-
-          <p>ICE/MANGO © 2026</p>
-        </footer>
-      </section>
-    </main>
-
-    <script>
-      const root = document.documentElement;
-
-      window.addEventListener(
-        "pointermove",
-        (event) => {
-          root.style.setProperty("--mouse-x", `${event.clientX}px`);
-          root.style.setProperty("--mouse-y", `${event.clientY}px`);
-        },
-        { passive: true },
-      );
-    </script>
-  </body>
+        root.style.setProperty("--rx", `${y * -8}deg`);
+        root.style.setProperty("--ry", `${x * 8}deg`);
+      },
+      { passive: true },
+    );
+  </script>
+</body>
 </html>
