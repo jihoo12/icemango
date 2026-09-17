@@ -1,11 +1,258 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import "../styles/global.css";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const specimens = [
+  {
+    number: "01",
+    tag: "COLOR",
+    title: "OKLCH",
+    copy: "Perceptual color, pushed beyond the comfortable edge.",
+    className: "specimen--color",
+  },
+  {
+    number: "02",
+    tag: "MASK",
+    title: "CUT IT",
+    copy: "Typography becomes shape. Shape becomes interface.",
+    className: "specimen--mask",
+  },
+  {
+    number: "03",
+    tag: "BLEND",
+    title: "MIX",
+    copy: "Layers collide without asking JavaScript for permission.",
+    className: "specimen--blend",
+  },
+];
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <meta
+      name="description"
+      content="A CSS-first experimental landing page built with Astro."
+    />
+
+    <title>ICE / MANGO — CSS Playground</title>
+  </head>
+
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
+
+    <header class="nav">
+      <a class="logo" href="#top" aria-label="Ice Mango home">
+        ICE<span>/</span>MANGO
+      </a>
+
+      <div class="nav__meta">
+        <span>CSS EXPERIMENT</span>
+        <span>2026</span>
+      </div>
+
+      <a class="nav__link" href="#experiments">EXPLORE ↓</a>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero__eyebrow">
+          <span>NO CANVAS</span>
+          <span>NO WEBGL</span>
+          <span>JUST THE BROWSER</span>
+        </div>
+
+        <h1 class="hero__title" aria-label="Ice Mango">
+          <span class="hero__line hero__line--ice">ICE</span>
+
+          <span class="hero__slash" aria-hidden="true">/</span>
+
+          <span class="hero__line hero__line--mango">MANGO</span>
+        </h1>
+
+        <div class="hero__footer">
+          <p>
+            An experiment in typography,<br />
+            motion and modern CSS.
+          </p>
+
+          <div class="hero__orb" aria-hidden="true"></div>
+
+          <p class="hero__scroll">
+            SCROLL TO<br />
+            BREAK THINGS ↓
+          </p>
+        </div>
+      </section>
+
+      <!-- MARQUEE -->
+      <section class="ticker" aria-label="CSS technologies">
+        <div class="ticker__track">
+          <span>CSS IS A GRAPHICS ENGINE ✦</span>
+          <span>OKLCH ✦</span>
+          <span>CONTAINER QUERIES ✦</span>
+          <span>SCROLL TIMELINES ✦</span>
+          <span>MASKS ✦</span>
+          <span>GRADIENTS ✦</span>
+
+          <span aria-hidden="true">CSS IS A GRAPHICS ENGINE ✦</span>
+          <span aria-hidden="true">OKLCH ✦</span>
+          <span aria-hidden="true">CONTAINER QUERIES ✦</span>
+          <span aria-hidden="true">SCROLL TIMELINES ✦</span>
+          <span aria-hidden="true">MASKS ✦</span>
+          <span aria-hidden="true">GRADIENTS ✦</span>
+        </div>
+      </section>
+
+      <!-- MANIFESTO -->
+      <section class="manifesto">
+        <div class="manifesto__label">
+          <span>[ MANIFESTO ]</span>
+          <span>001—004</span>
+        </div>
+
+        <div class="manifesto__copy">
+          <p class="reveal-text">
+            THE WEB DOESN'T
+          </p>
+
+          <p class="reveal-text reveal-text--indent">
+            NEED ANOTHER
+          </p>
+
+          <p class="reveal-text">
+            <em>SAFE</em> LANDING
+          </p>
+
+          <p class="reveal-text reveal-text--right">
+            PAGE.
+          </p>
+        </div>
+
+        <div class="manifesto__note">
+          <p>
+            Less component library.<br />
+            More browser.
+          </p>
+
+          <p>
+            We let layout stretch, color collide,
+            type escape and CSS do the work.
+          </p>
+        </div>
+      </section>
+
+      <!-- GIANT TYPE -->
+      <section class="type-break" aria-hidden="true">
+        <div class="type-break__sticky">
+          <p>TOO</p>
+          <p>MUCH</p>
+          <p>CSS</p>
+
+          <div class="type-break__disc"></div>
+        </div>
+      </section>
+
+      <!-- EXPERIMENTS -->
+      <section class="experiments" id="experiments">
+        <header class="section-head">
+          <p>[ SELECTED EXPERIMENTS ]</p>
+          <p>
+            THREE WAYS TO<br />
+            ABUSE A STYLESHEET.
+          </p>
+        </header>
+
+        <div class="specimens">
+          {
+            specimens.map((item) => (
+              <article class={`specimen ${item.className}`}>
+                <div class="specimen__meta">
+                  <span>{item.number}</span>
+                  <span>{item.tag}</span>
+                </div>
+
+                <div class="specimen__visual">
+                  <span>{item.title}</span>
+                </div>
+
+                <p class="specimen__copy">{item.copy}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- CSS GRID PLAYGROUND -->
+      <section class="grid-room">
+        <div class="grid-room__background" aria-hidden="true"></div>
+
+        <div class="grid-room__copy">
+          <span>RESPONSIVE</span>
+          <strong>WITHOUT</strong>
+          <span>BEING</span>
+          <strong>BORING.</strong>
+        </div>
+
+        <div class="grid-room__coordinates" aria-hidden="true">
+          <span>37°33′N</span>
+          <span>126°59′E</span>
+        </div>
+      </section>
+
+      <!-- STATEMENT -->
+      <section class="statement">
+        <p class="statement__tiny">A SMALL REMINDER</p>
+
+        <p class="statement__giant">
+          THE
+          <span>MEDIUM</span>
+          IS THE
+          <i>BROWSER.</i>
+        </p>
+      </section>
+
+      <!-- FINALE -->
+      <section class="finale">
+        <div class="finale__top">
+          <span>YOU MADE IT.</span>
+          <span>NO GPU WAS HARMED.</span>
+        </div>
+
+        <h2>
+          MAKE<br />
+          <span>WEIRD</span><br />
+          WEBSITES.
+        </h2>
+
+        <footer class="footer">
+          <a href="#top">BACK TO TOP ↑</a>
+
+          <p>
+            BUILT WITH<br />
+            ASTRO + CSS
+          </p>
+
+          <p>ICE/MANGO © 2026</p>
+        </footer>
+      </section>
+    </main>
+
+    <script>
+      const root = document.documentElement;
+
+      window.addEventListener(
+        "pointermove",
+        (event) => {
+          root.style.setProperty("--mouse-x", `${event.clientX}px`);
+          root.style.setProperty("--mouse-y", `${event.clientY}px`);
+        },
+        { passive: true },
+      );
+    </script>
+  </body>
+</html>
